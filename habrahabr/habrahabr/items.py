@@ -21,23 +21,10 @@ class ArticleItem(scrapy.Item):
     article_url         = scrapy.Field()
     article_views       = scrapy.Field()
     article_favs        = scrapy.Field()
-    author              = scrapy.Field()
-    comments            = scrapy.Field()
 
-
-class AuthorItem(scrapy.Item):
-    """ Collecting article's author info from habrahabr article
-    """
     author_name             = scrapy.Field()
     author_rating           = scrapy.Field()
     author_karma            = scrapy.Field()
     author_specialization   = scrapy.Field()
 
-
-class CommentItem(scrapy.Item):
-    """ Collecting article's comments
-    """
-
-    comment_date    = scrapy.Field()
-    comment_author  = scrapy.Field()
-    comment_content = scrapy.Field()
+    comments = scrapy.Field()

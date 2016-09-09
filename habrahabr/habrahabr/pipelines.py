@@ -39,10 +39,6 @@ class ElasticsearchPipeline(object):
         :return:
         """
 
-        # TODO. Format them normally!
-        item["author"] = dict(item["author"])
-        item["comments"] = dict(item["comments"])
-
         item_json = json.dumps(dict(item))
         url = "{}{}/{}/".format(self.es_url, self.es_index, self.es_type)
         response = requests.post(url, data=item_json)
