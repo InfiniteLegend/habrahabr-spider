@@ -8,18 +8,18 @@ class HabrahabrSpider(scrapy.Spider):
     name = "HabrahabrSpider"
     allowed_domains = ["habrahabr.ru"]
     start_urls = ["http://www.habrahabr.ru/page{}/".format(i) for i in xrange(1, 10)]
+    parsed_articles_count = 0
 
     def parse(self, response):
-        parsed_articles_count = 0
         parsed_articles = []
         for href in response.css(".post__title_link::attr('href')"):
             url = href.extract()
             if url not in parsed_articles:
                 print "HABRAHABR HOME PAGE PARSER: Received URL for article: {}".format(url)
-                parsed_articles_count += 1
+                self.parsed_articles_count += 1
                 parsed_articles.append(url)
                 yield scrapy.Request(url, callback=self.parse_habra_article)
-        print "HABRAHABR PARSER: {} pages successfully parsed!".format(parsed_articles_count)
+        print "HABRAHABR PARSER: {} pages successfully parsed!".format(self.parsed_articles_count)
 
     def parse_habra_article(self, response):
         article = ArticleItem()
@@ -37,8 +37,11 @@ class HabrahabrSpider(scrapy.Spider):
 
             # Parsing article's author info
             # TODO: Correctly parse float values, ignoring whitespaces (ex. "1 233")
-            karma = response.css(".voting-wjt__counter-score::text").extract()
-            specialization = response.css(".author-info__specialization::text").extract()
+            try:
+                karma = response.css(".voting-wjt__counter-score::text").extract()
+                specialization = response.css(".author-info__specialization::text").extract()
+            except Exception:
+                print "HABRAHABR ARTICLE PARSER: Unable to parse KARMA or SPECIALIZATION field"
             author["author_karma"]          = karma[0].replace(",", ".") if karma else "No karma"
             author["author_specialization"] = unicode(specialization[0]) if specialization else "Company"
             author["author_name"]           = unicode(response.css(".post-additionals .author-info__name::text").extract()[0])
