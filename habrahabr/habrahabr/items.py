@@ -8,7 +8,7 @@
 import scrapy
 
 
-class HabraItem(scrapy.Item):
+class HabrahabrItem(scrapy.Item):
     """ Collecting content, tags, hubs, comments, author info from habrahabr articles
 
     """
@@ -18,7 +18,7 @@ class HabraItem(scrapy.Item):
     article_title       = scrapy.Field()
     article_hubs        = scrapy.Field()
     article_content     = scrapy.Field()
-    article_tags        - scrapy.Field()
+    article_tags        = scrapy.Field()
 
     author_name             = scrapy.Field()
     author_rating           = scrapy.Field()
