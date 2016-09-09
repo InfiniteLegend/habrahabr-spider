@@ -7,7 +7,7 @@ from habrahabr.items import ArticleItem, AuthorItem, CommentItem
 class HabrahabrSpider(scrapy.Spider):
     name = "HabrahabrSpider"
     allowed_domains = ["habrahabr.ru"]
-    start_urls = ["http://www.habrahabr.ru/page{}/".format(i) for i in xrange(1, 101)]
+    start_urls = ["http://www.habrahabr.ru/page{}/".format(i) for i in xrange(1, 10)]
 
     def parse(self, response):
         parsed_articles_count = 0
@@ -36,12 +36,13 @@ class HabrahabrSpider(scrapy.Spider):
             article["article_url"]         = response.url
 
             # Parsing article's author info
+            # TODO: Correctly parse float values, ignoring whitespaces (ex. "1 233")
             karma = response.css(".voting-wjt__counter-score::text").extract()
             specialization = response.css(".author-info__specialization::text").extract()
-            author["author_karma"]          = float(karma[0].replace(",", ".")) if karma else "No karma"
+            author["author_karma"]          = karma[0].replace(",", ".") if karma else "No karma"
             author["author_specialization"] = unicode(specialization[0]) if specialization else "Company"
             author["author_name"]           = unicode(response.css(".post-additionals .author-info__name::text").extract()[0])
-            author["author_rating"]         = float(response.css(".user-rating__value::text").extract()[0].replace(",", "."))
+            author["author_rating"]         = response.css(".user-rating__value::text").extract()[0].replace(",", ".")
 
             # Assigning author to article
             article["author"] = author

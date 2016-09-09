@@ -38,11 +38,18 @@ class ElasticsearchPipeline(object):
         :param spider: <scrapy.Spider>
         :return:
         """
+
+        # TODO. Format them normally!
+        item["author"] = dict(item["author"])
+        item["comments"] = dict(item["comments"])
+
         item_json = json.dumps(dict(item))
         url = "{}{}/{}/".format(self.es_url, self.es_index, self.es_type)
         response = requests.post(url, data=item_json)
         if response.status_code >= 200 and response.status_code < 300:
             print "Successfully sent data to ES"
+        else:
+            print "ERROR. Response: {}".format(response.content)
         return item
 
 
@@ -67,7 +74,7 @@ class MongoPipeline(object):
 
         return cls(mongo_uri=crawler.settings.get("MONGO_URI"),
                    mongo_db=crawler.settings.get("MONGO_DATABASE"),
-                   collection_name=crawler.settings.get("MONGO_COLLECTION"))
+                   mongo_collection=crawler.settings.get("MONGO_COLLECTION"))
 
     def open_spider(self, spider):
         """ From documentation:
