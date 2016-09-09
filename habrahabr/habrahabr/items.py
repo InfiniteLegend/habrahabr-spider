@@ -10,7 +10,6 @@ import scrapy
 
 class ArticleItem(scrapy.Item):
     """ Collecting content, tags, hubs, views and favourite counts info from habrahabr articles
-
     """
 
     article_date        = scrapy.Field()
@@ -28,7 +27,6 @@ class ArticleItem(scrapy.Item):
 
 class AuthorItem(scrapy.Item):
     """ Collecting article's author info from habrahabr article
-
     """
     author_name             = scrapy.Field()
     author_rating           = scrapy.Field()
@@ -38,7 +36,6 @@ class AuthorItem(scrapy.Item):
 
 class CommentItem(scrapy.Item):
     """ Collecting article's comments
-
     """
 
     comment_date    = scrapy.Field()

@@ -7,18 +7,19 @@ from habrahabr.items import ArticleItem, AuthorItem, CommentItem
 class HabrahabrSpider(scrapy.Spider):
     name = "HabrahabrSpider"
     allowed_domains = ["habrahabr.ru"]
-    start_urls = (
-        'http://www.habrahabr.ru/',
-    )
+    start_urls = ["http://www.habrahabr.ru/page{}/".format(i) for i in xrange(1, 101)]
 
     def parse(self, response):
-        parsed_articles = 0
+        parsed_articles_count = 0
+        parsed_articles = []
         for href in response.css(".post__title_link::attr('href')"):
             url = href.extract()
-            print "HABRAHABR HOME PAGE PARSER: Received URL for article: {}".format(url)
-            parsed_articles += 1
-            yield scrapy.Request(url, callback=self.parse_habra_article)
-        print "HABRAHABR PARSER: {} pages successfully parsed!".format(parsed_articles)
+            if url not in parsed_articles:
+                print "HABRAHABR HOME PAGE PARSER: Received URL for article: {}".format(url)
+                parsed_articles_count += 1
+                parsed_articles.append(url)
+                yield scrapy.Request(url, callback=self.parse_habra_article)
+        print "HABRAHABR PARSER: {} pages successfully parsed!".format(parsed_articles_count)
 
     def parse_habra_article(self, response):
         article = ArticleItem()

@@ -158,3 +158,6 @@ pip-selfcheck.json
 # Test data (ex. JSON, CSV)
 *.json*
 *.csv*
+
+# Local settings
+local_settings.*
