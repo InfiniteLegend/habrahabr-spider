@@ -8,8 +8,8 @@
 import scrapy
 
 
-class HabrahabrItem(scrapy.Item):
-    """ Collecting content, tags, hubs, comments, author info from habrahabr articles
+class ArticleItem(scrapy.Item):
+    """ Collecting content, tags, hubs, views and favourite counts info from habrahabr articles
 
     """
 
@@ -19,11 +19,27 @@ class HabrahabrItem(scrapy.Item):
     article_hubs        = scrapy.Field()
     article_content     = scrapy.Field()
     article_tags        = scrapy.Field()
+    article_url         = scrapy.Field()
+    article_views       = scrapy.Field()
+    article_favs        = scrapy.Field()
+    author              = scrapy.Field()
+    comments            = scrapy.Field()
 
+
+class AuthorItem(scrapy.Item):
+    """ Collecting article's author info from habrahabr article
+
+    """
     author_name             = scrapy.Field()
     author_rating           = scrapy.Field()
     author_karma            = scrapy.Field()
     author_specialization   = scrapy.Field()
+
+
+class CommentItem(scrapy.Item):
+    """ Collecting article's comments
+
+    """
 
     comment_date    = scrapy.Field()
     comment_author  = scrapy.Field()

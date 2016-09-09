@@ -155,3 +155,6 @@ pip-selfcheck.json
 # Test projects
 *_test/
 
+# Test data (ex. JSON, CSV)
+*.json*
+*.csv*
