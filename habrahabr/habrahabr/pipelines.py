@@ -32,7 +32,7 @@ class ElasticsearchPipeline(object):
                    es_type=crawler.settings.get("ELASTICSEARCH_TYPE"))
 
     def process_item(self, item, spider):
-        """
+        """ Processing item
 
         :param item: <scrapy.Item>
         :param spider: <scrapy.Spider>
@@ -40,7 +40,7 @@ class ElasticsearchPipeline(object):
         """
 
         item_json = json.dumps(dict(item))
-        url = "{}{}/{}/".format(self.es_url, self.es_index, self.es_type)
+        url = "{}{}/{}/{}".format(self.es_url, self.es_index, self.es_type, item["id"])
         response = requests.post(url, data=item_json)
         if response.status_code >= 200 and response.status_code < 300:
             print "Successfully sent data to ES"

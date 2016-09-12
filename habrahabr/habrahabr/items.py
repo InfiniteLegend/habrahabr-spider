@@ -12,6 +12,10 @@ class ArticleItem(scrapy.Item):
     """ Collecting content, tags, hubs, views and favourite counts info from habrahabr articles
     """
 
+    # Id to identify article. It is extracted from article's URL
+    # (ex. https://habrahabr.ru/company/<name>/blog/<id>/ = > _id = "company/<name>/blog/<id>"
+    id = scrapy.Field()
+
     article_date        = scrapy.Field()
     article_category    = scrapy.Field()
     article_title       = scrapy.Field()
@@ -22,9 +26,5 @@ class ArticleItem(scrapy.Item):
     article_views       = scrapy.Field()
     article_favs        = scrapy.Field()
 
-    author_name             = scrapy.Field()
-    author_rating           = scrapy.Field()
-    author_karma            = scrapy.Field()
-    author_specialization   = scrapy.Field()
-
-    comments = scrapy.Field()
+    author      = scrapy.Field()
+    comments    = scrapy.Field()
