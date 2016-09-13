@@ -9,18 +9,18 @@ THOUSAND_PREFIX = "k"
 
 # Month in russian to their int equivalent
 MONTHS = {
-    # "январ": 1,
-    # unicode("феврал"): 2,
-    # unicode("март"): 3,
-    # unicode("апрел"): 4,
-    # unicode("ма"): 5,
-    # unicode("июн"): 6,
-    # unicode("июл"): 7,
-    # "август": 8,
-    "сентябр".decode("utf-8"): 9,
-    # "октябр": 10,
-    # "ноябр": 11,
-    # "декабр": 12,
+    "январ": 1,
+    "феврал": 2,
+    "март": 3,
+    "апрел": 4,
+    "ма": 5,
+    "июн": 6,
+    "июл": 7,
+    "август": 8,
+    "сентябр": 9,
+    "октябр": 10,
+    "ноябр": 11,
+    "декабр": 12,
 }
 
 
@@ -41,16 +41,16 @@ def translate_date(note_datetime):
     :return:
     """
 
-    print "Decoding note_datetime to utf-8"
-    # note_datetime = note_datetime.decode("utf-8")
+    print "Encoding note_datetime to utf-8"
+    note_datetime = note_datetime.encode("utf-8")
 
     # Check whether article was created in previous two days
-    today_pattern = re.compile(r"сегодня")
-    yesterday_pattern = re.compile(r"вчера")
+    today_pattern = re.compile("сегодня")
+    yesterday_pattern = re.compile("вчера")
 
     # Patterns for month name, date and time
     time_pattern = re.compile(r"в (\d+):(\d+)")
-    date_pattern = re.compile(r"(\d+) ((?u)\w+)")
+    date_pattern = re.compile("(\d+) (\S+)")
 
     if re.findall(today_pattern, note_datetime):
         print "This note was created today"
@@ -62,14 +62,13 @@ def translate_date(note_datetime):
         print "Manually parsing date of note creation"
         day, month = re.findall(date_pattern, note_datetime)[0]
         print "Day and month found. Extracting month value"
-        month = MONTHS[month[:-1]]
+        month = MONTHS[month[:-2]]
         current_year = datetime.date.today().year
-        datetime_obj = datetime.datetime(current_year, month, day)
+        datetime_obj = datetime.datetime(current_year, month, int(day))
 
     hours, minutes = re.findall(time_pattern, note_datetime)[0]
-    datetime_obj.hour = hours
-    datetime_obj.minutes = minutes
-    return datetime_obj
+    datetime_obj.replace(hour=int(hours), minute=int(minutes))
+    return str(datetime_obj)
 
 
 def translate_number(number):

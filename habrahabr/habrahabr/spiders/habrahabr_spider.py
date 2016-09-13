@@ -8,7 +8,7 @@ from habrahabr.utils import extract_id_from_url, translate_number, translate_dat
 class HabrahabrSpider(scrapy.Spider):
     name = "HabrahabrSpider"
     allowed_domains = ["habrahabr.ru"]
-    start_urls = ["http://www.habrahabr.ru/page{}/".format(i) for i in xrange(1, 3)]
+    start_urls = ["http://www.habrahabr.ru/page{}/".format(i) for i in xrange(1, 101)]
     parsed_articles_count = 0
 
     def parse(self, response):
@@ -47,6 +47,7 @@ class HabrahabrSpider(scrapy.Spider):
             try:
                 karma = response.css(".voting-wjt__counter-score::text").extract()
                 specialization = response.css(".author-info__specialization::text").extract()
+                translate_number(karma[0])
             except Exception:
                 print "HABRAHABR ARTICLE PARSER: Unable to parse KARMA or SPECIALIZATION field"
 
